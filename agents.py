@@ -218,6 +218,7 @@ class ResearchState(TypedDict):
     search_results: List[dict]
     academic_analysis: str
     fact_check: str
+    fact_check_done: str  # Osigurano mapiranje za stanja
     final_report: str
     messages: Annotated[List, operator.add]
     current_step: str
@@ -473,6 +474,7 @@ Budi koncizan i strukturiran."""),
     return {
         **state,
         "fact_check": response.content,
+        "fact_check_done": "done",
         "current_step": "fact_check_done",
         "messages": [AIMessage(content="✅ Fact Check Agent: validacija završena.")]
     }
@@ -545,30 +547,30 @@ Piši profesionalno i jasno."""),
 def build_graph():
     graph = StateGraph(ResearchState)
 
-    graph.add_node("orchestrator",  orchestrator_agent)
-    graph.add_node("web_search",    web_search_agent)
-    graph.add_node("academic",      academic_agent)
-    graph.add_node("reflection",    reflection_agent)
-    graph.add_node("fact_check",    fact_check_agent)
-    graph.add_node("writer",        writer_agent)
+    graph.add_node("orchestrator",     orchestrator_agent)
+    graph.add_node("web_search",       web_search_agent)
+    graph.add_node("academic",         academic_agent)
+    graph.add_node("reflection",       reflection_agent)
+    graph.add_node("fact_check_node",  fact_check_agent)  # Riješen konflikt preimenovanjem čvora
+    graph.add_node("writer",           writer_agent)
 
     graph.set_entry_point("orchestrator")
     graph.add_edge("orchestrator", "web_search")
     graph.add_edge("web_search",   "academic")
     graph.add_edge("academic",     "reflection")
 
-    # Uvjetni ruter: retry ili nastavi
+    # Uvjetni ruter: retry ili nastavi prema novom imenu čvora
     graph.add_conditional_edges(
         "reflection",
         should_retry_analysis,
         {
             "retry":    "academic",
-            "continue": "fact_check"
+            "continue": "fact_check_node"
         }
     )
 
-    graph.add_edge("fact_check", "writer")
-    graph.add_edge("writer",     END)
+    graph.add_edge("fact_check_node", "writer")
+    graph.add_edge("writer",          END)
 
     return graph.compile()
 
@@ -584,6 +586,7 @@ def run_research(topic: str) -> dict:
         search_results=[],
         academic_analysis="",
         fact_check="",
+        fact_check_done="start",
         final_report="",
         messages=[HumanMessage(content=f"Tema istraživanja: {topic}")],
         current_step="start",
