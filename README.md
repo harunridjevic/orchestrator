@@ -12,7 +12,7 @@ Aplikacija je uspješno deployana na cloud infrastrukturu i možete je odmah tes
 
 ---
 
-# 💻 Lokalno pokretanje projekta
+# 💻 Lokalno pokretanje
 
 Ukoliko želite pokrenuti projekat lokalno na svom računaru, pratite sljedeće korake:
 
