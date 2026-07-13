@@ -4,7 +4,7 @@
 
 ---
 
-## 🌐 Pokretanje uživo (Live Demo)
+## 🌐 Pokretanje uživo (Live Demo) 
 
 Aplikacija je uspješno deployana na cloud infrastrukturu i možete je odmah testirati bez ikakve lokalne konfiguracije na sljedećem linku:
 
