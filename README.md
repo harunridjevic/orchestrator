@@ -6,7 +6,7 @@
 
 ## 🌐 Pokretanje uživo (Live Demo) 
 
-Aplikacija je uspješno deployana na cloud infrastrukturu i možete je odmah testirati bez ikakve lokalne konfiguracije na sljedećem linku:
+Aplikacija je uspješno deployana na cloud infrastrukturu i možete je testirati bez ikakve lokalne konfiguracije na sljedećem linku:
 
 👉 **[fit-orchestrator.streamlit.app](https://fit-orchestrator.streamlit.app/)**
 
